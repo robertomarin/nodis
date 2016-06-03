@@ -19,17 +19,16 @@ if (program.port) console.log('### redisPort: %s', program.port);
 var redis = require("redis");
 var client = redis.createClient({host: program.host, port: program.port || 6379});
 
-
 var elapsed_time = function(note) {
     var precision = 0; // 3 decimal places
     var elapsed = process.hrtime(start)[1] / 1000000; // divide by a million to get nano to milli
-    console.log(process.hrtime(start)[0] + " s, " + elapsed.toFixed(precision) + " ms - " + note); // print message + time
+    console.log(elapsed.toFixed(precision) + " ms - " + note); // print message + time
     start = process.hrtime(); // reset the timer
 };
 
 var start = process.hrtime();
-elapsed_time('antes redis');
 var get = client.get('unkown-key-128321932', function(err, reply) {
-  console.log(reply);
-  elapsed_time('depois redis');
+  elapsed_time('total time');
 });
+
+client.quit();
